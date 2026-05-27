@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt: Análisis Competitivo Inmobiliario — Mérida</title>
+<style>
+  :root {
+    --bg:       #0F172A;
+    --surface:  #1E293B;
+    --surface2: #0D1117;
+    --border:   #334155;
+    --gold:     #C9A452;
+    --gold-dim: #E8D5A0;
+    --text:     #E2D8C4;
+    --muted:    #94A3B8;
+    --blue:     #60A5FA;
+    --green:    #7FBC8C;
+    --red:      #E08B8B;
+    --purple:   #C084FC;
+    --cyan:     #67E8F9;
+    --orange:   #FB923C;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--surface2);
+    border-bottom: 2px solid var(--gold);
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .header-left h1 span { color: var(--gold); }
+  .header-left p { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+  .header-right { display: flex; gap: .5rem; align-items: center; }
+  .badge-sm {
+    background: rgba(201,164,82,.15);
+    border: 1px solid rgba(201,164,82,.3);
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .18rem .6rem;
+    border-radius: 99px;
+  }
+  .copy-btn {
+    background: var(--gold);
+    color: #0F172A;
+    font-size: .78rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    padding: .38rem 1rem;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .copy-btn:hover { background: #e0b85a; }
+
+  /* ── COLUMN LABELS ── */
+  .col-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    background: var(--surface2);
+  }
+  .col-label {
+    padding: .45rem 1.2rem;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .col-label:first-child { border-right: 1px solid var(--border); }
+  .col-label .dot {
+    width: .5rem; height: .5rem;
+    border-radius: 50%;
+  }
+
+  /* ── MAIN GRID ── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ── ROW BLOCK ── */
+  .row-block {
+    display: contents;
+  }
+  .md-col, .exp-col {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    min-height: fit-content;
+  }
+  .md-col { border-right: 1px solid var(--border); }
+
+  /* ── SECTION HEADER ROW ── */
+  .sec-header-row {
+    display: contents;
+  }
+  .sec-label {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: .5rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .sec-num {
+    width: 1.5rem; height: 1.5rem;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #0F172A;
+    font-size: .72rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sec-title { font-size: .82rem; font-weight: 700; color: var(--gold-dim); }
+
+  /* ── MARKDOWN SYNTAX ── */
+  .md {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: .79rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .md .h1   { color: var(--blue);   font-weight: 700; }
+  .md .h2   { color: var(--purple); font-weight: 700; }
+  .md .h3   { color: var(--cyan);   font-weight: 700; }
+  .md .bold { color: var(--gold-dim); font-weight: 700; }
+  .md .em   { color: var(--orange); font-style: italic; }
+  .md .code { color: #7DD3FC; background: rgba(255,255,255,.06); padding: .05em .25em; border-radius: 3px; }
+  .md .bullet { color: var(--gold); }
+  .md .num   { color: var(--green); font-weight: 600; }
+  .md .comment { color: var(--muted); font-style: italic; }
+  .md .dash { color: var(--border); }
+  .md input[type="text"] {
+    background: rgba(201,164,82,.1);
+    border: 1px dashed rgba(201,164,82,.5);
+    border-radius: 3px;
+    color: var(--gold);
+    font-family: inherit;
+    font-size: inherit;
+    padding: .05em .3em;
+    outline: none;
+    min-width: 140px;
+    width: auto;
+  }
+  .md input[type="text"]::placeholder { color: #475569; font-style: italic; }
+  .md input[type="text"]:focus { border-color: var(--gold); background: rgba(201,164,82,.15); }
+
+  /* ── EXPLANATION SIDE ── */
+  .exp-col { background: var(--surface); }
+  .exp-title {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .45rem;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+  }
+  .exp-title::before {
+    content: '';
+    display: inline-block;
+    width: 2px; height: .9rem;
+    background: var(--gold);
+    border-radius: 1px;
+  }
+  .exp-body {
+    font-size: .82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .exp-body p { margin-bottom: .4rem; }
+  .exp-body p:last-child { margin-bottom: 0; }
+  .exp-body strong { color: var(--text); font-weight: 600; }
+  .exp-body em { color: var(--green); font-style: normal; }
+  .exp-body .why {
+    background: rgba(201,164,82,.07);
+    border-left: 2px solid var(--gold);
+    padding: .4rem .65rem;
+    border-radius: 0 6px 6px 0;
+    margin-top: .45rem;
+    font-size: .8rem;
+    color: var(--text);
+  }
+  .exp-body .why::before { content: '💡 '; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .45rem; }
+  .chip {
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .15rem .55rem;
+    border-radius: 99px;
+    border: 1px solid;
+  }
+  .chip.blue   { color: var(--blue);   border-color: rgba(96,165,250,.3);  background: rgba(96,165,250,.08); }
+  .chip.green  { color: var(--green);  border-color: rgba(127,188,140,.3); background: rgba(127,188,140,.08); }
+  .chip.gold   { color: var(--gold);   border-color: rgba(201,164,82,.35); background: rgba(201,164,82,.08); }
+  .chip.purple { color: var(--purple); border-color: rgba(192,132,252,.3); background: rgba(192,132,252,.08); }
+  .chip.red    { color: var(--red);    border-color: rgba(224,139,139,.3); background: rgba(224,139,139,.08); }
+
+  /* ── HIDDEN PROMPT FOR COPY ── */
+  #prompt-raw { position: absolute; left: -9999px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="header-left">
+    <h1>Análisis Competitivo Inmobiliario — <span>Mérida, Yucatán</span></h1>
+    <p>Plantilla de prompt estructurado · Analista Senior de Inteligencia de Mercado · 2023–2025</p>
+  </div>
+  <div class="header-right">
+    <span class="badge-sm">Markdown</span>
+    <span class="badge-sm">Editable</span>
+    <button class="copy-btn" onclick="copyPrompt()">⎘ Copiar prompt</button>
+  </div>
+</div>
+
+<!-- COLUMN LABELS -->
+<div class="col-labels">
+  <div class="col-label"><div class="dot" style="background:#C9A452"></div>Formato Markdown (prompt)</div>
+  <div class="col-label"><div class="dot" style="background:#7FBC8C"></div>Explicación y propósito</div>
+</div>
+
+<!-- MAIN SPLIT VIEW -->
+<div class="main">
+
+  <!-- ══ SECCIÓN 1: TEMA ══ -->
+  <div class="sec-label">
+    <div class="sec-num">·</div>
+    <div class="sec-title">Encabezado del Prompt</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h1"># Tema: Análisis Competitivo de los Actores</span>
+<span class="h1">#         Inmobiliarios en Mérida, Yucatán (2023-2025)</span></div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Encabezado H1</div>
+    <div class="exp-body">
+      <p>El <strong>título H1</strong> orienta al modelo sobre el tema global del prompt antes de leer cualquier instrucción. Funciona como contexto ancla.</p>
+      <div class="why">Un encabezado claro reduce la ambigüedad y ayuda al modelo a activar el marco conceptual correcto desde la primera línea.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 2: ROL ══ -->
+  <div class="sec-label">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Rol y Perspectiva</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 1. Rol y Perspectiva</span>
+Actuar como <span class="bold">**analista senior de inteligencia de mercado**</span>
+especializado en bienes raíces. Combinar rigor cuantitativo
+con visión estratégica, brindando recomendaciones prácticas
+a los tomadores de decisiones.</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Asignación de rol (Role Prompting)</div>
+    <div class="exp-body">
+      <p>El <strong>role prompting</strong> instruye al modelo a adoptar una perspectiva específica. Combinando <em>seniority</em> + <em>especialización</em> + <em>audiencia</em> se obtiene un tono más técnico y orientado a decisiones.</p>
+      <div class="why">Sin un rol explícito, el modelo tiende a respuestas genéricas. Al definirlo, activa patrones de razonamiento analítico propios de ese perfil.</div>
+      <div class="chip-row">
+        <span class="chip gold">Seniority</span>
+        <span class="chip blue">Especialización</span>
+        <span class="chip green">Audiencia objetivo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 3: OBJETIVO ══ -->
+  <div class="sec-label">
+    <div class="sec-num">2</div>
+    <div class="sec-title">Objetivo y Resultado Deseado</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 2. Objetivo</span>
+<span class="bullet">-</span> <span class="bold">**Pregunta principal:**</span> ¿Cómo se comparan los
+  principales competidores en el mercado inmobiliario
+  de Mérida (2023-2025) y dónde se encuentran las
+  oportunidades estratégicas de diferenciación?
+
+<span class="bullet">-</span> <span class="bold">**Resultado deseado:**</span> Un informe que incluya:
+  <span class="num">1)</span> Análisis del posicionamiento competitivo
+  <span class="num">2)</span> Evaluación de fortalezas y debilidades
+  <span class="num">3)</span> Identificación de oportunidades de mercado
+  <span class="num">4)</span> Recomendaciones estratégicas
+  <span class="num">5)</span> Cronograma de implementación con KPI</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Pregunta + entregables concretos</div>
+    <div class="exp-body">
+      <p>La <strong>pregunta principal</strong> es la brújula del análisis. Los modelos responden mejor cuando existe una pregunta clara y acotada, no solo un tema general.</p>
+      <p>La lista de <strong>entregables numerados</strong> define el contrato de salida: el modelo sabe exactamente cuántas secciones producir y en qué orden.</p>
+      <div class="why">Separar pregunta de entregables evita que el modelo confunda "sobre qué hablar" con "cómo estructurar la respuesta".</div>
+      <div class="chip-row">
+        <span class="chip blue">Pregunta directa</span>
+        <span class="chip green">Entregables enumerados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 4: CONTEXTO ══ -->
+  <div class="sec-label">
+    <div class="sec-num">3</div>
+    <div class="sec-title">Contexto, Alcance y Competidores</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 3. Contexto y Límites</span>
+<span class="bullet">-</span> <span class="bold">**Enfoque geográfico:**</span> Mérida, Yucatán
+  (área metropolitana y municipios circundantes)
+<span class="bullet">-</span> <span class="bold">**Periodo:**</span> Enero 2023 – Presente
+<span class="bullet">-</span> <span class="bold">**Competidores principales:**</span>
+  <span class="bullet">  -</span> <input type="text" placeholder="[Competidor 1]" id="c1" />
+  <span class="bullet">  -</span> <input type="text" placeholder="[Competidor 2]" id="c2" />
+  <span class="bullet">  -</span> <input type="text" placeholder="[Competidor 3]" id="c3" />
+  <span class="bullet">  -</span> <input type="text" placeholder="[Competidor 4]" id="c4" />
+  <span class="bullet">  -</span> <input type="text" placeholder="[Competidor 5]" id="c5" />
+<span class="bullet">-</span> <span class="bold">**Exclusiones del alcance:**</span>
+  <span class="bullet">  -</span> Desarrollos de lujo fuera del área metropolitana
+  <span class="bullet">  -</span> Agentes internacionales con participación &lt;1%</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Delimitación del alcance</div>
+    <div class="exp-body">
+      <p>Los <strong>límites geográficos y temporales</strong> evitan que el modelo divague hacia mercados irrelevantes. Cuanto más específico el alcance, más preciso el análisis.</p>
+      <p>La lista de <strong>competidores</strong> es editable — haz clic en el campo amarillo para escribir el nombre. Se incluirán automáticamente al copiar el prompt.</p>
+      <p>Las <strong>exclusiones explícitas</strong> son tan importantes como las inclusiones: previenen alucinaciones sobre segmentos fuera del foco.</p>
+      <div class="why">Un prompt sin límites produce análisis superficial de todo; con límites produce profundidad en lo relevante.</div>
+      <div class="chip-row">
+        <span class="chip gold">✎ Campos editables</span>
+        <span class="chip red">Exclusiones explícitas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 5: MÉTRICAS ══ -->
+  <div class="sec-label">
+    <div class="sec-num">4</div>
+    <div class="sec-title">Términos y Métricas Clave</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 4. Términos y Métricas Clave</span>
+Definir y usar estos términos:
+<span class="bullet">-</span> <span class="bold">**Participación de mercado**</span> (% propiedades
+  en venta, % volumen de ventas)
+<span class="bullet">-</span> <span class="bold">**Precio promedio / m²**</span> por segmento
+  (lotes, casas, condominios, comercial)
+<span class="bullet">-</span> <span class="bold">**Tasa de absorción**</span> / rotación de inventario
+  (meses de oferta)
+<span class="bullet">-</span> <span class="bold">**Tiempo en el mercado**</span> (días promedio venta/renta)
+<span class="bullet">-</span> <span class="bold">**Rendimiento digital:**</span> tráfico web, SEO
+  "casas en venta Mérida", redes sociales, leads
+<span class="bullet">-</span> <span class="bold">**Amplitud del portafolio:**</span> propiedades activas,
+  segmentos, nuevos desarrollos representados
+<span class="bullet">-</span> <span class="bold">**Diferenciación de servicios:**</span> financiamiento,
+  asesoría legal, posventa, visitas virtuales, CRM
+
+<span class="comment">*Definir método de cálculo si se estima una métrica.*</span></div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Vocabulario controlado</div>
+    <div class="exp-body">
+      <p>Definir las métricas <strong>antes</strong> del análisis obliga al modelo a usar los mismos indicadores en toda la respuesta, haciendo los comparativos consistentes y reproducibles.</p>
+      <p>La nota <em>"definir método de cálculo si se estima"</em> activa el comportamiento de <strong>transparencia metodológica</strong>: el modelo declara cómo llegó a cada número.</p>
+      <div class="why">Sin un glosario, el modelo puede usar "participación de mercado" y "cuota de inventario" como sinónimos, rompiendo la comparabilidad.</div>
+      <div class="chip-row">
+        <span class="chip blue">Métricas cuantitativas</span>
+        <span class="chip purple">Métricas digitales</span>
+        <span class="chip green">Métricas cualitativas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 6: DATOS ══ -->
+  <div class="sec-label">
+    <div class="sec-num">5</div>
+    <div class="sec-title">Datos y Fuentes</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 5. Datos y Fuentes</span>
+Usar (o solicitar) datos de:
+<span class="bullet">-</span> Portales: Inmuebles24, Vivanuncios, EasyBroker
+<span class="bullet">-</span> Sitios web y métricas de redes sociales
+<span class="bullet">-</span> Informes: AMPI Mérida, cámaras locales
+<span class="bullet">-</span> Noticias / comunicados 2023-2025
+<span class="bullet">-</span> Datasets internos, si se proporcionan
+
+<span class="bold">**Nota:**</span> Indicar supuestos cuando falten datos
+y citar fuentes al final de cada sección.</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Grounding de fuentes</div>
+    <div class="exp-body">
+      <p>Listar fuentes específicas <strong>ancla</strong> al modelo en datos reales del mercado local en lugar de generalizaciones globales.</p>
+      <p>La instrucción de <strong>"indicar supuestos"</strong> es clave: fuerza al modelo a distinguir entre dato verificado y estimación razonada, reduciendo alucinaciones silenciosas.</p>
+      <div class="why">Un modelo sin instrucción de transparencia inventará cifras con total confianza. Con esta nota, declara cuándo estima.</div>
+      <div class="chip-row">
+        <span class="chip gold">Fuentes locales MX</span>
+        <span class="chip blue">Portales públicos</span>
+        <span class="chip red">⚠ Declarar supuestos</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 7: PASOS ══ -->
+  <div class="sec-label">
+    <div class="sec-num">6</div>
+    <div class="sec-title">Instrucciones Paso a Paso</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 6. Instrucciones Paso a Paso</span>
+<span class="comment">*(Piensa paso a paso)*</span>
+
+<span class="num">1.</span> <span class="bold">**Aclarar datos de entrada:**</span> Listar lo que
+   falta y formular preguntas concisas.
+<span class="num">2.</span> <span class="bold">**Recopilar y organizar:**</span> Tabla comparativa
+   de métricas por competidor.
+<span class="num">3.</span> <span class="bold">**Analizar posicionamiento:**</span> Mapear en 2-3
+   ejes perceptuales (precio vs. servicio).
+<span class="num">4.</span> <span class="bold">**Evaluar F/D:**</span> Capacidades, brechas
+   y riesgos por actor.
+<span class="num">5.</span> <span class="bold">**Oportunidades y amenazas:**</span> Tendencias
+   (migración, infraestructura, regulación).
+<span class="num">6.</span> <span class="bold">**Formular estrategia:**</span> Producto · precio
+   · canales · alianzas · operaciones.
+<span class="num">7.</span> <span class="bold">**Hoja de ruta:**</span> 3-4 fases, cronogramas,
+   responsables, KPI.
+<span class="num">8.</span> <span class="bold">**Validar e iterar:**</span> Incertidumbres;
+   próximas extracciones de datos.
+<span class="num">9.</span> <span class="bold">**Resumen ejecutivo:**</span> ≤5 hallazgos
+   accionables para tomadores de decisión.</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Chain-of-Thought estructurado</div>
+    <div class="exp-body">
+      <p>Esta sección implementa <strong>Chain-of-Thought (CoT)</strong>: descomponer la tarea en pasos explícitos obliga al modelo a razonar secuencialmente en lugar de saltar directo a conclusiones.</p>
+      <p>La frase <em>"Piensa paso a paso"</em> está documentada como uno de los activadores de razonamiento más efectivos en modelos de lenguaje.</p>
+      <p>El paso <strong>1 (aclarar antes de responder)</strong> permite que el modelo pida información faltante en lugar de inventarla.</p>
+      <div class="why">Un prompt sin pasos produce una respuesta lineal. Con CoT el modelo sigue el flujo lógico del analista: datos → análisis → estrategia → implementación.</div>
+      <div class="chip-row">
+        <span class="chip purple">Chain-of-Thought</span>
+        <span class="chip blue">Secuencia lógica</span>
+        <span class="chip green">De datos a acción</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 8: FORMATO SALIDA ══ -->
+  <div class="sec-label">
+    <div class="sec-num">7</div>
+    <div class="sec-title">Formato de Salida</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 7. Formato de Salida</span>
+Estructura requerida:
+<span class="bullet">-</span> <span class="bold">**Resumen ejecutivo**</span> (≤200 palabras)
+<span class="bullet">-</span> <span class="bold">**1. Posicionamiento competitivo**</span>
+   — tabla de métricas + matriz perceptual
+<span class="bullet">-</span> <span class="bold">**2. Fortalezas y debilidades**</span>
+   por competidor
+<span class="bullet">-</span> <span class="bold">**3. Oportunidades de mercado**</span>
+   clasificadas por impacto/viabilidad
+<span class="bullet">-</span> <span class="bold">**4. Recomendaciones estratégicas**</span>
+   (qué / por qué / cómo)
+<span class="bullet">-</span> <span class="bold">**5. Cronograma + KPI**</span>
+   fases tipo Gantt + indicadores medibles
+<span class="bullet">-</span> <span class="bold">**Apéndice:**</span> fuentes · supuestos · cálculos
+
+Requisitos:
+<span class="bullet">-</span> Encabezados numerados H2/H3
+<span class="bullet">-</span> Tablas para comparaciones cuantitativas
+<span class="bullet">-</span> Viñetas para listas
+<span class="bullet">-</span> Citar fuentes al final de cada sección</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Output formatting</div>
+    <div class="exp-body">
+      <p>Especificar el <strong>esquema de salida exacto</strong> es tan importante como las instrucciones de análisis: el modelo sabe de antemano cuántas secciones crear y en qué formato presentar cada una.</p>
+      <p>Los <strong>requisitos de formato</strong> (tablas, viñetas, encabezados) garantizan que la respuesta sea escaneable y usable en presentaciones ejecutivas sin reformatear.</p>
+      <div class="why">Sin formato definido, el modelo puede dar un ensayo de texto corrido en lugar de tablas y secciones comparables. El formato es parte del entregable.</div>
+      <div class="chip-row">
+        <span class="chip gold">Resumen ejecutivo</span>
+        <span class="chip blue">Tablas comparativas</span>
+        <span class="chip green">Apéndice de fuentes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECCIÓN 9: RAZONAMIENTO ══ -->
+  <div class="sec-label">
+    <div class="sec-num">8</div>
+    <div class="sec-title">Razonamiento, Refinamiento y Límites</div>
+  </div>
+
+  <div class="md-col">
+    <div class="md"><span class="h2">## 8. Técnicas de Razonamiento</span>
+<span class="bullet">-</span> Describir el razonamiento <span class="bold">**paso a paso**</span>
+  antes de las respuestas finales.
+<span class="bullet">-</span> Usar comparaciones, cálculos breves y
+  justificaciones para cada afirmación.
+<span class="bullet">-</span> Ocultar trabajo preliminar en versión final
+  si se indica.
+
+<span class="h2">## 9. Refinamiento Iterativo</span>
+Después del primer borrador:
+<span class="bullet">-</span> Preguntar: <span class="em">*"¿Qué profundizar, eliminar</span>
+  <span class="em">  o reformatear?"*</span>
+<span class="bullet">-</span> Ofrecer 2-3 opciones de ajuste de alcance.
+<span class="bullet">-</span> Incorporar retroalimentación en v2.
+
+<span class="h2">## 10. Limitaciones y Enfoque</span>
+<span class="bullet">-</span> Centrarse en análisis de competencia.
+<span class="bullet">-</span> Listar preguntas adicionales por separado.
+
+<span class="h2">## 11. Justificación y Referencias</span>
+<span class="bullet">-</span> Justificar afirmaciones no obvias con dato/cita.
+<span class="bullet">-</span> Fuentes recientes <span class="bold">**(2023-2025)**</span>.
+
+<span class="h2">## 12. Revisión Final</span>
+<span class="bullet">-</span> Información clara, proceso lógico.
+<span class="bullet">-</span> Sin instrucciones redundantes.
+<span class="bullet">-</span> Todos los entregables incluidos.
+
+<span class="dash">---</span>
+<span class="bold">**Comience ahora.**</span> Si falta información crucial,
+indíquelo antes de proceder.</div>
+  </div>
+  <div class="exp-col">
+    <div class="exp-title">Meta-instrucciones y cierre</div>
+    <div class="exp-body">
+      <p><strong>Secciones 8–10</strong> son meta-instrucciones: no describen el análisis sino cómo el modelo debe razonar y comportarse durante todo el proceso.</p>
+      <p>El <strong>refinamiento iterativo</strong> convierte el prompt en un diálogo: el modelo no entrega un bloque final sino que ofrece puntos de ajuste, haciendo el proceso colaborativo.</p>
+      <p>Las <strong>limitaciones explícitas</strong> (sec. 10) evitan que el modelo expanda el alcance sin permiso — un error común cuando el tema es amplio.</p>
+      <p>El cierre <em>"Comience ahora. Si falta información crucial, indíquelo"</em> activa el comportamiento de <strong>aclaración antes de asumir</strong>.</p>
+      <div class="why">Un buen prompt no solo instruye el qué; también instruye el cómo razonar, cuándo preguntar y cómo iterar.</div>
+      <div class="chip-row">
+        <span class="chip purple">Meta-instrucciones</span>
+        <span class="chip blue">Iteración colaborativa</span>
+        <span class="chip red">Límites de alcance</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- HIDDEN PROMPT -->
+<textarea id="prompt-raw" readonly>
+# Tema: Análisis Competitivo de los Actores Inmobiliarios en Mérida, Yucatán (2023-2025)
+
+## 1. Rol y Perspectiva
+Actuar como **analista senior de inteligencia de mercado** especializado en bienes raíces. Combinar rigor cuantitativo con visión estratégica, brindando recomendaciones prácticas a los tomadores de decisiones.
+
+## 2. Objetivo
+- **Pregunta principal:** ¿Cómo se comparan los principales competidores en el mercado inmobiliario de Mérida (2023-2025) y dónde se encuentran las oportunidades estratégicas de diferenciación y crecimiento?
+- **Resultado deseado:** Un informe que incluya:
+  1) Análisis del posicionamiento competitivo
+  2) Evaluación de fortalezas y debilidades
+  3) Identificación de oportunidades de mercado
+  4) Recomendaciones estratégicas
+  5) Cronograma de implementación con KPI
+
+## 3. Contexto y Límites
+- **Enfoque geográfico:** Mérida, Yucatán (área metropolitana y municipios circundantes).
+- **Periodo:** Enero 2023 – Presente.
+- **Competidores principales:**
+  - [C1]
+  - [C2]
+  - [C3]
+  - [C4]
+  - [C5]
+- **Exclusiones del alcance:**
+  - Desarrollos de lujo fuera del área metropolitana de Mérida
+  - Agentes internacionales con participación <1%
+
+## 4. Términos y Métricas Clave
+Definir y usar:
+- **Participación de mercado** (% propiedades en venta, % volumen de ventas)
+- **Precio promedio / m²** por segmento (lotes residenciales, casas, condominios, comercial)
+- **Tasa de absorción** / rotación de inventario (meses de oferta)
+- **Tiempo en el mercado** (días promedio para venta/alquiler)
+- **Rendimiento digital:** tráfico web, SEO "casas en venta Mérida", redes sociales, conversión de leads
+- **Amplitud del portafolio:** propiedades activas, segmentos cubiertos, nuevos desarrollos representados
+- **Diferenciación de servicios:** financiamiento, asesoría legal, posventa, visitas virtuales, CRM
+
+*Definir claramente el método de cálculo si se infiere o estima alguna métrica.*
+
+## 5. Datos y Fuentes
+Usar datos de:
+- Portales públicos: Inmuebles24, Vivanuncios, EasyBroker
+- Sitios web de empresas y métricas de redes sociales
+- Informes de mercado: AMPI Mérida, cámaras locales
+- Noticias / comunicados de prensa 2023-2025
+- Datasets internos, si se proporcionan
+
+**Nota:** Indicar supuestos cuando falten datos y citar fuentes al final de cada sección relevante.
+
+## 6. Instrucciones Paso a Paso
+*(Piensa paso a paso)*
+
+1. **Aclarar datos de entrada:** Enumerar datos/competidores que faltan; formular preguntas concisas.
+2. **Recopilar y organizar:** Elaborar tabla comparativa de métricas clave por competidor.
+3. **Analizar posicionamiento:** Mapear cada competidor en 2-3 ejes perceptuales (precio vs. diferenciación de servicios).
+4. **Evaluar fortalezas/debilidades:** Capacidades principales, brechas y riesgos de cada actor.
+5. **Identificar oportunidades y amenazas:** Usar tendencias (migración a Mérida, infraestructura, cambios regulatorios).
+6. **Formular la estrategia:** Acciones específicas: producto · precio · canales · alianzas · operaciones.
+7. **Hoja de ruta de implementación:** 3-4 fases con cronogramas, responsables e KPI.
+8. **Validar e iterar:** Identificar incertidumbres; proponer próximas extracciones de datos.
+9. **Resumir conclusiones clave:** ≤5 hallazgos accionables para tomadores de decisión.
+
+## 7. Formato de Salida
+Presentar en esta estructura (encabezados y viñetas claros):
+- **Resumen ejecutivo** (≤200 palabras)
+- **1. Análisis de posicionamiento competitivo** — tabla de métricas + matriz perceptual
+- **2. Fortalezas y debilidades por competidor**
+- **3. Oportunidades de mercado** (clasificadas por impacto/viabilidad)
+- **4. Recomendaciones estratégicas** (qué/por qué/cómo)
+- **5. Cronograma de implementación y KPI** (fases tipo Gantt + indicadores medibles)
+- **Apéndice:** fuentes · supuestos · notas de cálculo
+
+Requisitos de formato: encabezados numerados H2/H3 · tablas para comparaciones · viñetas para listas · citar fuentes al final de cada sección.
+
+## 8. Técnicas de Razonamiento
+- Describir el razonamiento paso a paso antes de la respuesta final.
+- Usar comparaciones, cálculos breves y justificaciones para cada afirmación.
+- Ocultar trabajo preliminar en la versión final si se indica.
+
+## 9. Refinamiento Iterativo
+Después del primer borrador:
+- Preguntar: "¿Qué se debería profundizar, eliminar o reformatear?"
+- Ofrecer 2-3 opciones para ajustar el alcance.
+- Incorporar retroalimentación en versión refinada.
+
+## 10. Limitaciones y Enfoque
+- Centrarse en el análisis de la competencia.
+- Listar preguntas adicionales por separado para futuras iteraciones.
+
+## 11. Justificación y Referencias
+- Justificar cada afirmación no obvia con cita o dato.
+- Usar fuentes recientes (2023-2025) y confiables.
+
+## 12. Revisión Final
+- Información clara, proceso lógico, sin instrucciones redundantes.
+- Confirmar que se incluyan todos los entregables requeridos.
+
+---
+**Comience ahora.** Si falta información crucial, indíquelo antes de proceder.
+</textarea>
+
+<script>
+function copyPrompt() {
+  const ta = document.getElementById('prompt-raw');
+  let text = ta.value;
+  const ids = ['c1','c2','c3','c4','c5'];
+  ids.forEach((id, i) => {
+    const val = document.getElementById(id).value.trim();
+    if (val) text = text.replace(`[C${i+1}]`, val);
+  });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado';
+    btn.style.background = '#7FBC8C';
+    btn.style.color = '#fff';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
